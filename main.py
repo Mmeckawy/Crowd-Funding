@@ -119,26 +119,19 @@ def projects():
          # Get the selected item
          selected_item = tree.selection()[0]
 
-         # Delete the selected item
-         tree.delete(selected_item)
-
          # Get the project details from the selected item
          project_details = tree.item(selected_item, 'values')
 
-         # Get the project title from the project details
-         project_title = project_details[0]
-
-         # Delete the project
-         del proj.projects[project_title]
+         # Get the project ID from the project details
+         project_id = project_details[0]
 
          # Clear the Treeview
          for item in tree.get_children():
             tree.delete(item)
 
-         # Repopulate the Treeview
-         for project in proj.projects:
-            tree.insert("", tk.END, text=project, values=(proj.projects[project]['title'],proj.projects[project]['details'], 
-                           proj.projects[project]['target'], proj.projects[project]['start_date'],proj.projects[project]['end_date'])) 
+         # Delete the project
+         del proj.projects[project_id]
+
 
    create_button = tk.Button(project_gui, text="Create", command=create)
    create_button.place(x = 70, y = 250)
