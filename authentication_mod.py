@@ -1,4 +1,5 @@
 import re
+import json
 
 users = {}
 
@@ -28,11 +29,57 @@ def register_user(first_name, last_name, email, password, phone):
     if not validate_phone(phone):
         return "Invalid phone number"
     else:  
-        users[email] = { 'first_name': first_name, 'last_name': last_name, 'password': password, 'phone': phone}
+        users[email] = {'first_name': first_name, 'last_name': last_name, 'password': password, 'phone': phone}
+        save_user(users)
         print(users)
         return "Registered Successfully"
 
 def authenticate_user(email, password):
-    user = users.get(email)
-    print("Logged in")
-    return user['password'] == password
+    users = read_all_users()
+
+    for user_dict in users:
+        user_email = next(iter(user_dict.keys()), None)
+        user_data = user_dict.get(user_email, {})
+        
+        if user_email == email and user_data.get('password') == password:
+            print("Logged in")
+            return True
+
+    print("Invalid email or password")
+    return False
+
+
+    
+"""Files"""
+def read_all_users():
+    try:
+        fileobject = open("users.json", "r")
+    except Exception as e:
+        print(e)
+        return False
+    else:
+        user = fileobject.read()
+        # print(data)
+        if user:
+            user = json.loads(user) 
+        else:
+            user = []
+        fileobject.close()
+        return user
+
+def save_all_users(users : list):
+    users = json.dumps(users, indent=4)
+    try:
+        fileobject = open("users.json", 'w')
+    except Exception as e:
+        print(e)
+        return  False
+    else:
+        fileobject.write(users)
+        return  True
+
+def save_user(users :dict ):
+    users_all = read_all_users()
+    users_all.append(users)
+    users_saved = save_all_users(users_all)
+    print(users_saved)

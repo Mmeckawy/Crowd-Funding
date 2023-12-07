@@ -1,4 +1,5 @@
 import re
+import json
 from datetime import datetime
 
 projects = {}
@@ -26,7 +27,7 @@ def validate_date(start_date = None, end_date = None):
        else:
            return "Valid"
 
-def new_project(title, details, target, start_date, end_date):
+def new_project(id, email, title, details, target, start_date, end_date):
     if validate_target(target) == True:
         pass
     else:
@@ -35,6 +36,7 @@ def new_project(title, details, target, start_date, end_date):
     if not validate_date(start_date,end_date) == "Valid":
         return "Enter Date Again"
     else:
-        projects[title] = {'title' : title, 'details': details, 'target' : target, 'start_date' : start_date, 'end_date' : end_date}
+        projects[id] = {'id' : id, 'email' : email, 'title' : title, 'details': details, 'target' : target, 'start_date' : start_date, 'end_date' : end_date}
         print(projects)
         return "Project Created successfully"
+    
