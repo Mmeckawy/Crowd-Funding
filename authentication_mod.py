@@ -2,6 +2,7 @@ import re
 import json
 
 users = {}
+email_unique =""
 
 def validate_name(first_name="name", last_name="name"):
 
@@ -28,7 +29,7 @@ def register_user(first_name, last_name, email, password, phone):
     
     if not validate_phone(phone):
         return "Invalid phone number"
-    else:  
+    else:
         users[email] = {'first_name': first_name, 'last_name': last_name, 'password': password, 'phone': phone}
         save_user(users)
         print(users)
@@ -42,6 +43,8 @@ def authenticate_user(email, password):
         user_data = user_dict.get(user_email, {})
         
         if user_email == email and user_data.get('password') == password:
+            global email_unique
+            email_unique = email
             print("Logged in")
             return True
 
